@@ -1,26 +1,48 @@
-import { Injectable } from '@nestjs/common';
+import {Inject, Injectable, NotFoundException} from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import {Repository} from "typeorm";
+import {User} from "./entities/user.entity";
+import {SuccessResponse} from "../../common/helpers/success-response";
+import {InjectRepository} from "@nestjs/typeorm";
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {
+  }
+  async create(createUserDto: CreateUserDto) {
+    const existUser = await this.userRepository.findOne({
+      where: { email: createUserDto.email}
+    });
+    if (existUser !== null) {
+      throw new NotFoundException("This email already in user")
+    }
+
+    const userCreated = await this.userRepository.save(createUserDto)
+    return SuccessResponse.from(userCreated)
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findAll() {
+    const userList = await this.userRepository.find();
+    return SuccessResponse.from(userList)
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: string) {
+    const getUserById = await this.userRepository.findOneById(id);
+    return SuccessResponse.from(getUserById);
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    await this.userRepository.update(id, updateUserDto);
+    return SuccessResponse.from(await this.userRepository.findOneById(id));
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    const user = await this.userRepository.findOneById(id);
+    await this.userRepository.remove(user);
+    return SuccessResponse.from(user);
   }
 }
