@@ -1,4 +1,19 @@
-import {Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, BaseEntity} from "typeorm";
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  BaseEntity,
+} from "typeorm";
+
+export enum Status {
+  ALL = 'All',
+  MY = 'My',
+  ANXIOUS = 'Anxious',
+  SLEEP = 'Sleep',
+  KIDS = 'Kids',
+}
 
 @Entity({ name: 'user'})
 export class User extends BaseEntity{
@@ -13,6 +28,12 @@ export class User extends BaseEntity{
 
   @Column({ name: 'password', nullable: false})
   password: string;
+
+  @Column({ name: 'token', nullable: false})
+  token: string;
+
+  @Column({ name: 'status', type: 'enum', enum: Status , default: Status.ALL})
+  status: Status;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;
