@@ -5,7 +5,7 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   BaseEntity,
-} from "typeorm";
+} from 'typeorm';
 
 export enum Status {
   ALL = 'All',
@@ -15,24 +15,24 @@ export enum Status {
   KIDS = 'Kids',
 }
 
-@Entity({ name: 'user'})
-export class User extends BaseEntity{
+@Entity({ name: 'user' })
+export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   userId: string;
 
-  @Column({ name: 'name', nullable: false})
+  @Column({ name: 'name', nullable: false })
   name: string;
 
-  @Column({ name: 'email', nullable: false})
+  @Column({ name: 'email', nullable: false })
   email: string;
 
-  @Column({ name: 'password', nullable: false})
+  @Column({ name: 'password', nullable: false })
   password: string;
 
-  @Column({ name: 'token', nullable: false})
+  @Column({ name: 'token', nullable: false })
   token: string;
 
-  @Column({ name: 'status', type: 'enum', enum: Status , default: Status.ALL})
+  @Column({ name: 'status', type: 'enum', enum: Status, default: Status.ALL })
   status: Status;
 
   @CreateDateColumn({ name: 'created_at' })
@@ -40,5 +40,4 @@ export class User extends BaseEntity{
 
   @UpdateDateColumn({ name: 'updated_at' })
   updatedAt: Date;
-
 }

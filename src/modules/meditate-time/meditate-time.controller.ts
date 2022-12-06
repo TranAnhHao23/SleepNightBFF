@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { MeditateTimeService } from './meditate-time.service';
 import { CreateMeditateTimeDto } from './dto/create-meditate-time.dto';
 import { UpdateMeditateTimeDto } from './dto/update-meditate-time.dto';
@@ -23,7 +31,10 @@ export class MeditateTimeController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateMeditateTimeDto: UpdateMeditateTimeDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateMeditateTimeDto: UpdateMeditateTimeDto,
+  ) {
     return this.meditateTimeService.update(+id, updateMeditateTimeDto);
   }
 
